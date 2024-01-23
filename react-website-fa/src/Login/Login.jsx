@@ -64,34 +64,91 @@ function Login() {
             // onSubmit={handleSubmit}
             sx={{ mt: 5, backgroundColor: "white", borderRadius: "5%" }}
           >
-            <TextField
-              margin="normal"
-              required
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              // value={email}
-              // onChange={(e) => setEmail(e.target.value)}
-              className="my-text-fieldLU"
-            />
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                variant="h"
+                color="text.secondary"
+                sx={{ ml: 2, zIndex: 1 }}
+              >
+                email
+              </Typography>
+              <TextField
+                borderRadius="20px"
+                margin="normal"
+                required
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                sx={{
+                  borderRadius: "20px",
+                  mr: 4,
+                  zIndex: 1,
+                  backgroundColor: "#201A2B",
+                  color: "white",
+                  "& label": {
+                    fontFamily: "Arial, sans-serif",
+                    fontSize: "16px",
+                    color: "white",
+                  },
+                  "& label.Mui-focused": {
+                    color: "transparent",
+                  },
+                  "& fieldset": {
+                    border: "none",
+                  },
+                }}
+                className="my-text-fieldLU"
+              />
+            </div>
             {/* {emailError} */}
-            <TextField
-              margin="normal"
-              required
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              // value={pw}
-              // onChange={(e) => setPasswrod(e.target.value)}
-              className="my-text-fieldLU"
-            />
-            {/* {passwordError}
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <Typography
+                variant="h"
+                color="text.secondary"
+                sx={{ ml: 2, mr: 2, zIndex: 1 }}
+              >
+                pw
+              </Typography>
+              <TextField
+                margin="normal"
+                required
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                sx={{
+                  borderRadius: "20px",
+                  mr: 4,
+                  zIndex: 1,
+                  backgroundColor: "#201A2B",
+                  color: "white",
+                  "& label": {
+                    fontFamily: "Arial, sans-serif",
+                    fontSize: "16px",
+                    color: "white",
+                  },
+                  "& label.Mui-focused": {
+                    color: "transparent",
+                  },
+                  "& fieldset": {
+                    border: "none",
+                  },
+                }}
+                // value={pw}
+                // onChange={(e) => setPasswrod(e.target.value)}
+                className="my-text-fieldLU"
+              />
+              {/* {passwordError}
             <h6 className="LoginError">{loginError}</h6> */}
-
+            </div>
             <div
               style={{
                 display: "flex",
@@ -105,8 +162,8 @@ function Login() {
                 variant="contained"
                 // onClick={handleSubmit}
                 sx={{
-                  mt: -5,
-                  mb: 8,
+                  mt: -3,
+                  mb: 7,
                   width: "70%",
                   backgroundColor: "#311E57",
                   "&:hover": {
@@ -121,7 +178,7 @@ function Login() {
             <Typography
               variant="h"
               color="text.secondary"
-              sx={{ ml: 12, zIndex: 1 }}
+              sx={{ ml: 8, zIndex: 1 }}
             >
               Do not have an account?
             </Typography>
