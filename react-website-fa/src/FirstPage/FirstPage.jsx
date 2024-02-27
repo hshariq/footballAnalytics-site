@@ -4,8 +4,16 @@ import img from "../images/Pitch.jpg";
 import img2 from "../images/football-player.png";
 import Donut from "./Donut";
 import Navbar from "../NavBar/navbar";
+import {useNavigate } from "react-router-dom";
 
 function FirstPage() {
+
+  const navigate = useNavigate()
+  const Clickity = (event) => {
+    event.preventDefault();
+    navigate("/yo")
+    console.log('Div cliockedddd')
+  }
   return (
     <div>
       <Navbar />
@@ -92,8 +100,11 @@ function FirstPage() {
               textAlign: "center",
               fontSize: "28px",
               zIndex: 0,
+              
             }}
-          >
+            
+            onClick={Clickity}
+          > 
             <div style={{ marginTop: "10px" }}>PLAYER ANALYSIS</div>
             <div
               style={{

@@ -1,15 +1,22 @@
 import './App.css';
 import Login from './Login/Login';
 import FirstPage from './FirstPage/FirstPage';
-// import { BrowserRouter as Router,Route,Routes } from 'react-router-dom';
+import UploadVideo from './UploadPage/UploadVideo';
+import {Route,Routes } from 'react-router-dom';
+import FirstPagee from './FirstPage/FirstPagee';
+import EnterNames from './EnterNames/EnterName';
 
-function App() {
+
+
+export default function App() {
   return (
     <div className="App">
-      {/* <Login /> */}
-      <FirstPage/>
+      <Routes> 
+        <Route exact path="/" element={<FirstPagee/>} />
+        <Route path='/analysis/:id' element={<UploadVideo/>}/>
+        <Route path='/names' element={<EnterNames/>}/>
+
+      </Routes>
     </div>
   );
 }
-
-export default App;
