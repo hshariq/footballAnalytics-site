@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import Navbar from "../NavBar/navbar";
+import ResponsiveAppBar from "../NavBar/NavBarNew";
 import img from "../images/uploadicon.jpg";
 import "./UploadVideo.css";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
+
 
 function UploadVideo(props) {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -76,7 +77,7 @@ function UploadVideo(props) {
 
   return (
     <div>
-      <Navbar />
+      <ResponsiveAppBar/>
       <div>
         <h1 className="heading">
           {analysis ? "Player Analysis" : "Team Analysis"}

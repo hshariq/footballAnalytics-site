@@ -1,5 +1,7 @@
-body{
-  background-color: #201A2B;
+body {
+  background-image: url('footy.jpeg');
+  background-size: cover;
+  background-repeat: no-repeat;
   font-family: "https://fonts.googleapis.com/css2?family=Poppins&display=swap", sans-serif;
   font-weight: bold;
 }

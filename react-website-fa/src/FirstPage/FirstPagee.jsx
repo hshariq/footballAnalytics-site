@@ -1,18 +1,32 @@
 import React, { useState } from "react";
-import Grid from "@mui/material/Grid";
-import img from "../images/Pitch.jpg";
 import img2 from "../images/football-player.png";
-import Donut from "./Donut";
-import Navbar from "../NavBar/navbar";
+import img1 from '../images/team.png'
+import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
-import "./FirstPagee.css"; // Import the CSS file
-import UploadVideo from "../UploadPage/UploadVideo";
+import "./FirstPagee.css";
+import ResponsiveAppBar from "../NavBar/NavBarNew";
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
+
 
 
 function FirstPagee() {
   const navigate = useNavigate();
   const [playeranalysis, setPlayerAnalysis] = useState(true);
   const [isVisible,setIsVisible]  = useState(false);
+
+  const ProceedButton = styled(Button)(({ theme }) => ({
+    color: '#FFFFFF',
+    backgroundColor: '#0c2222',
+    fontSize: '1rem',
+    fontWeight: 5000,
+    letterSpacing: '.5rem',
+    fontFamily: 'monospace',
+    '&:hover': {
+      backgroundColor: '#FFFFFF',
+      color: '#0c2222',
+    },
+  }));
 
   const Clickity = (event) => {
     event.preventDefault();
@@ -21,47 +35,75 @@ function FirstPagee() {
 
   const revert = (event) => {
     event.preventDefault();
-    console.log(!playeranalysis)
-    console.log("wdlkjfwlkerflrekjfhljksdh");
     setPlayerAnalysis(!playeranalysis);
   };
 
   return (
     <div>
-      <Navbar />
+      <ResponsiveAppBar></ResponsiveAppBar>
       <div>
-        <h1 className="heading">FOOTBALL ANALYTICS</h1>
-        <div className="page-container">
-          <img src={img} alt="Pitch" style={{ bottom: "570px" }} />
-          <div className="card total-minutes">Total Minutes 258</div>
-          <div className="card avg-ratings">Avg Ratings 7.58</div>
-
-          <div className="player-analysis">
-            <div className="label">
-              {playeranalysis ? "Player Analysis" : "Team Analysis"}
-            </div>
-            <img src={img2} alt="Football Players" />
-            <div className="triangle-left" onClick={revert}></div>
-            <button className="proceed" onClick={Clickity}>
-              Perform Analysis
-            </button>
-            <div className="triangle-right" onClick={revert}></div>
-          </div>
-
-          <div
-            style={{
-              position: "absolute",
-              top: "180px",
-              left: "50%",
-              transform: "translateX(-50%)",
-              width: "130px",
-              height: "100px",
-              color: "white",
-              textAlign: "center",
-              fontSize: "28px",
+      <div className="heading">
+      <Typography
+            variant="h4"
+            noWrap
+            component="a"
+            sx={{
+              mx: 'auto',
+              fontFamily: 'monospace',
+              fontWeight: 5000,
+              letterSpacing: '.5rem',
+              textDecoration: 'none',
+              color: '#ffffff',
+              alignContent:'center'
             }}
           >
-            <Donut />
+            FOOTBALL ANALYTICS 
+        </Typography>
+        </div>
+        <div className="second-heading"><Typography
+            variant="h5"
+            noWrap
+            component="a"
+            sx={{
+              mx: 'auto',
+              fontFamily: 'monospace',
+              fontWeight: 5000,
+              letterSpacing: '.5rem',
+              textDecoration: 'none',
+              color: '#ffffff'
+            }}
+          >
+            CHOOSE YOUR ANALYSIS
+        </Typography></div>
+        
+        <div className="page-container">
+          <div className="player-analysis">
+              <div className="label">
+              <Typography
+              variant="h5"
+              noWrap
+              component="a"
+              href="#app-bar-with-responsive-menu"
+              sx={{
+                mx: 'auto',
+                fontFamily: 'monospace',
+                fontWeight: 5000,
+                letterSpacing: '.5rem',
+                textDecoration: 'none',
+                color: '#ffffff'
+              }}
+            >
+                {playeranalysis ? "PLAYER ANALYSIS" : "TEAM ANALYSIS"}
+                </Typography>
+              </div>
+              <img src={playeranalysis? img2: img1} alt="Football Players" />
+              <div className="triangle-left" onClick={revert}></div>
+              <ProceedButton className="proceed"
+              variant="contained"
+
+              onClick={Clickity}
+                >Perform Analysis</ProceedButton>
+              <div className="triangle-right" onClick={revert}></div>
           </div>
         </div>
       </div>

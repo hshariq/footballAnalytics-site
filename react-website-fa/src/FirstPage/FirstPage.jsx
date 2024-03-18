@@ -5,6 +5,7 @@ import img2 from "../images/football-player.png";
 import Donut from "./Donut";
 import Navbar from "../NavBar/navbar";
 import {useNavigate } from "react-router-dom";
+import ResponsiveAppBar from "../NavBar/NavBarNew";
 
 function FirstPage() {
 
@@ -16,7 +17,6 @@ function FirstPage() {
   }
   return (
     <div>
-      <Navbar />
       <div>
         <h1 style={{ textAlign: "center", color: "white", paddingTop: "40px" }}>
           {" "}

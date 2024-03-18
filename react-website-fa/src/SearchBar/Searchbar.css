@@ -1,0 +1,49 @@
+.card {
+    background-color: '#0c2222';
+    width: 440px;
+    height:150px;
+
+}
+ .search {
+    transform: translateY(20px);
+ }
+.vs {
+    transform: translateY(10px);
+}
+
+.searchbox {
+    transform: translateY(100px);
+}
+
+
+.search-bar-dropdown1{
+    background-color: white;
+    transform: translateX(-24px );
+}
+
+.search-bar-dropdown-item1{
+    color: #0c2222;
+    font-size: medium;
+}
+
+.search-bar-dropdown-item1:hover{
+    color: azure;
+    background-color: #0c2222;
+
+}
+
+.search-bar-dropdown2{
+    background-color: white;
+    transform: translateX(-24px );
+}
+
+.search-bar-dropdown-item2{
+    color: #0c2222;
+    font-size: medium;
+}
+
+.search-bar-dropdown-item2:hover{
+    color: azure;
+    background-color: #0c2222;
+
+}
