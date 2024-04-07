@@ -9,20 +9,11 @@ import { outlinedInputClasses } from "@mui/material/OutlinedInput";
 import { Grid } from "@mui/material";
 import axios from "axios";
 import { useRef } from "react";
+import footballTeams from "./teamnames";
 
-const options1 = [
-  "Manchester City",
-  "Manchester United",
-  "Arsenal",
-  "Liverpool",
-];
+const options1 = footballTeams;
 
-const options2 = [
-  "Manchester City",
-  "Manchester United",
-  "Arsenal",
-  "Liverpool",
-];
+const options2 = footballTeams;
 
 const customTheme = (outerTheme) =>
   createTheme({
@@ -37,7 +28,10 @@ const customTheme = (outerTheme) =>
             "--TextField-brandBorderHoverColor": "#FFFFFF",
             "--TextField-brandBorderFocusedColor": "#FFFFFF",
             "& label.Mui-focused": {
-              color: "#FFFFFF",
+              color: "#FFFFFF", // Set label text color to white when focused
+            },
+            "& label": {
+              color: "#FFFFFF", // Set label text color to white
             },
           },
         },
@@ -95,34 +89,54 @@ const customTheme = (outerTheme) =>
     },
   });
 
+
 function SearchBar() {
   const outerTheme = useTheme();
+  const [openmenu1, setopenmenu1] = React.useState(null);
+  const [openmenu2, setopenmenu2] = React.useState(null);
+  const [error1, setError1] = useState(false);
+  const [error2, setError2] = useState(false);
+  const [team1, setTeam1] = useState("");
+  const [team2, setTeam2] = useState("");
+  const [date, setDate] = useState("");
+  const textFieldRef = useRef(null);
+  const textFieldRef2 = useRef(null);
 
   const handleSearch = () => {
-    var str = `sofa score ${team1} vs ${team2} ${date}`;
-    let data = JSON.stringify({
-      search_query: str,
-    });
-
-    let config = {
-      method: "post",
-      maxBodyLength: Infinity,
-      url: "http://127.0.0.1:5000/matchid",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
-    };
-    axios
-      .request(config)
-      .then((response) => {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch((error) => {
-        console.log("API NOT WORKIMNG");
+    if (team1 === "" || team2 === "") {
+      console.log("Please select both teams");
+      setError1(team1 === ""); // Set error state for team1 if it's empty
+      setError2(team2 === ""); // Set error state for team2 if it's empty
+    } else if (team1 === team2) {
+      console.log("Team names cannot be the same");
+      setError1(true); // Set error state for team1
+      setError2(true); // Set error state for team2
+    } else {
+      var str = `sofa score ${team1} vs ${team2} ${date}`;
+      let data = JSON.stringify({
+        search_query: str,
       });
-    console.log(str);
+      let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: "http://127.0.0.1:5000/matchid",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+      axios
+        .request(config)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch((error) => {
+          console.log("API NOT WORKING");
+        });
+      console.log(str);
+    }
   };
+  
 
   const SearchButton = styled(Button)(({ theme }) => ({
     color: "#FFFFFF",
@@ -138,13 +152,7 @@ function SearchBar() {
     },
   }));
 
-  const [openmenu1, setopenmenu1] = React.useState(null);
-  const [openmenu2, setopenmenu2] = React.useState(null);
-  const [team1, setTeam1] = useState("");
-  const [team2, setTeam2] = useState("");
-  const [date, setDate] = useState("");
-  const textFieldRef = useRef(null);
-  const textFieldRef2 = useRef(null);
+  
 
   const handleMenuTeam1Click = (name) => {
     setTeam1(name);
@@ -161,13 +169,13 @@ function SearchBar() {
   const handleTeam1Change = (event) => {
     setopenmenu1(true);
     setTeam1(event.target.value);
-    console.log(team1);
-  };
+    setError1(false);
+    };
 
   const handleTeam2Change = (event) => {
     setopenmenu2(true);
     setTeam2(event.target.value);
-    console.log(team2);
+    setError2(false); // Reset error state when input changes
   };
 
   const handleOpen1 = () => {
@@ -189,16 +197,15 @@ function SearchBar() {
               onChange={(e) => setTeam1(e.target.value)}
               margin="normal"
   /> */}
-
             <TextField
               label="Team 1"
               value={team1}
               onChange={handleTeam1Change}
               margin="normal"
+              error={error1}
               onClick={handleOpen1}
               ref={textFieldRef}
             />
-
             {openmenu1 && (
               <div
                 className="search-bar-dropdown1"
@@ -209,6 +216,9 @@ function SearchBar() {
                     textFieldRef.current.offsetHeight,
                   left: textFieldRef.current.offsetLeft,
                   width: textFieldRef.current.offsetWidth,
+                  maxHeight: "200px", // Set maximum height for the menu
+                  overflowY: "auto", // Enable vertical scrolling if menu overflows
+                  zIndex: 1000, // Ensure the menu appears above other elements
                 }}
               >
                 {options1
@@ -226,15 +236,15 @@ function SearchBar() {
                   ))}
               </div>
             )}
-
             <div className="vs">vs</div>
             <TextField
-               label="Team 2"
-               value={team2}
-               onChange={handleTeam2Change}
-               margin="normal"
-               onClick={handleOpen2}
-               ref={textFieldRef2}
+              label="Team 2"
+              value={team2}
+              onChange={handleTeam2Change}
+              margin="normal"
+              error={error2}
+              onClick={handleOpen2}
+              ref={textFieldRef2}
             />
             {openmenu2 && (
               <div
@@ -246,6 +256,9 @@ function SearchBar() {
                     textFieldRef2.current.offsetHeight,
                   left: textFieldRef2.current.offsetLeft,
                   width: textFieldRef2.current.offsetWidth,
+                  maxHeight: "200px", // Set maximum height for the menu
+                  overflowY: "auto", // Enable vertical scrolling if menu overflows
+                  zIndex: 1000, // Ensure the menu appears above other elements
                 }}
               >
                 {options2
