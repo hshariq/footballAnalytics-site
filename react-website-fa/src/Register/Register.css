@@ -1,0 +1,54 @@
+.register-page {
+    display: flex;
+  }
+
+  .register-form{
+    flex:1;
+    width: 50vh;
+    height:600px;
+    box-shadow: 10px;
+
+  }
+  .left-side{
+    flex:1;
+  }
+
+  .right-side{
+    flex:1;
+  }
+
+  .register-fields{
+    transform: translateY(0px);
+    height: 330px;
+    width:400px
+
+  }
+  .username{
+    width: 300px;
+    transform: translateY(15px);
+
+  }
+  .register-email{
+    width: 300px;
+    transform: translateY(15px);
+  }
+  .register-password{
+    width: 300px;
+    transform: translateY(15px);
+  }
+  .confirm-password{
+    width: 300px;
+    transform: translateY(15px);
+  }
+
+  .login-row{
+    transform: translateY(30px);
+  }
+
+  .register-heading{
+  transform: translateY(30px);
+}
+
+.register-bt{
+  transform: translateY(15px);
+}

@@ -8,6 +8,9 @@ import EnterNames from './EnterNames/EnterName';
 import SearchBar from './SearchBar/SearchBar';
 import HomePage from './HomePage/HomePage';
 import Search from './SearchBar/Search';
+import ResponsiveAppBar from './NavBar/NavBarNew';
+import Register from './Register/Register';
+import Dashboard from './Dashboard/Dashboard';
 
 
 
@@ -15,12 +18,15 @@ export default function App() {
   return (
     <div className="App">
       <Routes> 
-        <Route exact path="/" element={<HomePage/>} />
+        <Route exact path="/login" element={<Login/>} />
+        <Route exact path="/register" element={<Register/>} />
+        <Route exact path="/home" element={<HomePage/>} />
         <Route exact path="/search" element={<Search/>} />
         <Route exact path="/analysis" element={<FirstPagee/>} />
         <Route exact path="/about" element={<SearchBar/>} />
         <Route path='/analysis/:id' element={<UploadVideo/>}/>
         <Route path='/names' element={<EnterNames/>}/>
+        <Route path='/dashboard' element={<Dashboard/>}/>
 
       </Routes>
     </div>

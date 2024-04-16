@@ -1,9 +1,5 @@
-import React from "react";
-import { FaUser } from "react-icons/fa";
-import { FaLock } from "react-icons/fa";
+import React, { useState } from "react";
 import "./Login.css";
-import img from "../images/login.jpg";
-//react-website-fa\src\images\login.jpg
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -11,259 +7,253 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { Link } from "react-router-dom";
+import { createTheme, ThemeProvider, useTheme } from "@mui/material/styles";
+import { outlinedInputClasses } from "@mui/material/OutlinedInput";
+import { useNavigate } from "react-router-dom";
+import Stack from "@mui/material/Stack";
+import { styled } from "@mui/material/styles";
+import axios from "axios";
+import ResponsiveAppBar from "../NavBar/NavBarNew";
+
+const customTheme = (outerTheme) =>
+  createTheme({
+    palette: {
+      mode: outerTheme.palette.mode,
+    },
+    components: {
+      MuiTextField: {
+        styleOverrides: {
+          root: {
+            "--TextField-brandBorderColor": "#FFFFFF",
+            "--TextField-brandBorderHoverColor": "#FFFFFF",
+            "--TextField-brandBorderFocusedColor": "#FFFFFF",
+            "& label.Mui-focused": {
+              color: "#FFFFFF", // Set label text color to white when focused
+            },
+            "& label": {
+              color: "#FFFFFF", // Set label text color to white
+            },
+          },
+        },
+      },
+      MuiOutlinedInput: {
+        styleOverrides: {
+          notchedOutline: {
+            borderColor: "var(--TextField-brandBorderColor)",
+          },
+          root: {
+            color: "#FFFFFF",
+            [`&:hover .${outlinedInputClasses.notchedOutline}`]: {
+              borderColor: "var(--TextField-brandBorderHoverColor)",
+            },
+            [`&.Mui-focused .${outlinedInputClasses.notchedOutline}`]: {
+              borderColor: "var(--TextField-brandBorderFocusedColor)",
+            },
+          },
+        },
+      },
+      MuiFilledInput: {
+        styleOverrides: {
+          root: {
+            color: "#FFFFFF",
+            "&::before, &::after": {
+              borderBottom: "2px solid var(--TextField-brandBorderColor)",
+            },
+            "&:hover:not(.Mui-disabled, .Mui-error):before": {
+              borderBottom: "2px solid var(--TextField-brandBorderHoverColor)",
+            },
+            "&.Mui-focused:after": {
+              borderBottom:
+                "2px solid var(--TextField-brandBorderFocusedColor)",
+            },
+          },
+        },
+      },
+      MuiInput: {
+        styleOverrides: {
+          root: {
+            color: "#FFFFFF",
+            "&::before": {
+              borderBottom: "2px solid var(--TextField-brandBorderColor)",
+            },
+            "&:hover:not(.Mui-disabled, .Mui-error):before": {
+              borderBottom: "2px solid var(--TextField-brandBorderHoverColor)",
+            },
+            "&.Mui-focused:after": {
+              borderBottom:
+                "2px solid var(--TextField-brandBorderFocusedColor)",
+            },
+          },
+        },
+      },
+    },
+  });
 
 function Login() {
+  const SearchButton = styled(Button)(({ theme }) => ({
+    color: "#FFFFFF",
+    backgroundColor: "#201A2B",
+    fontSize: "1rem",
+    fontWeight: 5000,
+    letterSpacing: ".5rem",
+    fontFamily: "monospace",
+    border: "#FFFFFF",
+    "&:hover": {
+      backgroundColor: "#FFFFFF",
+      color: "#201A2B",
+    },
+  }));
+
+  const outerTheme = useTheme();
+  const [email, setEmail] = useState("");
+  const [emailerror, setEmailError] = useState(false);
+  const [pw, setPW] = useState("");
+  const [pwerror, setPwError] = useState(false);
+  const navigate = useNavigate();
+
+  const handleRegister = () => {
+    navigate('/register')
+  }
+
+  const handleLogin = () => {
+      console.log("in login func")
+      if (email == ""){
+       setEmailError(true)
+      }
+      else if(pw == "") {
+        setPwError(true)
+      }
+      else {
+        setPwError(false)
+        setEmailError(false)
+        let data = JSON.stringify({
+          "user_email": `${email}`,
+          "user_password": `${pw}`
+        });
+        
+        let config = {
+          method: 'post',
+          maxBodyLength: Infinity,
+          url: 'http://127.0.0.1:5000/users',
+          headers: { 
+            'Content-Type': 'application/json'
+          },
+          data : data
+        };
+        
+        axios.request(config)
+        .then((response) => {
+          var token = (JSON.stringify(response.data));
+          localStorage.setItem("token", token);
+          navigate('/home')
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      }
+
+  }
+  React.useEffect(() => {
+    localStorage.removeItem("token");
+  })
+
   return (
-    <Grid container component="main" sx={{ height: "100vh" }}>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
-        rel="stylesheet"
-      />
-      <CssBaseline />
-      <Grid
-        item
-        xs={false}
-        sm={4}
-        md={7}
-        sx={{
-          backgroundImage: "url(" + img + ")",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
-      <Grid
-        item
-        xs={12}
-        sm={8}
-        md={5}
-        component={Paper}
-        elevation={6}
-        square
-        sx={{ backgroundColor: "#201A2B" }}
-      >
+    <div>
+      <ResponsiveAppBar></ResponsiveAppBar>
+      <div className="page-container">
+        <div className="left-side"></div>
         <Box
+          className="form-container"
           sx={{
-            my: 10,
-            mx: 4,
+            mt: 5,
+            backgroundColor: "white",
+            borderRadius: "5%",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)'
           }}
         >
-          {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar> */}
-          <h1 className="headerofLogin" variant="h5" style={{ color: "white" }}>
-            LOGIN AS USER
-          </h1>
-          <Box
-            className="form"
-            noValidate
-            // onSubmit={handleSubmit}
-            sx={{ mt: 5, backgroundColor: "white", borderRadius: "5%" }}
-          >
-            <div
-              style={{
+          <ThemeProvider theme={customTheme(outerTheme)}>
+            <Typography
+              className="heading"
+              variant="h4"
+              noWrap
+              component="a"
+              sx={{
+                fontFamily: "monospace",
+                fontWeight: 5000,
+                letterSpacing: ".5rem",
+                textDecoration: "none",
+                color: "#201A2B",
+                alignContent: "center",
+              }}
+            >
+              LOGIN AS USER
+            </Typography>
+            <Box
+              className="fields-container"
+              sx={{
+                mt: 5,
+                backgroundColor: "#201A2B",
+                borderRadius: "5%",
                 display: "flex",
+                flexDirection: "column",
                 alignItems: "center",
               }}
             >
-              <Typography
-                variant="h"
-                color="text.secondary"
-                sx={{ ml: 2, zIndex: 1 }}
-              >
-                email
-              </Typography>
-              <TextField
-                borderRadius="20px"
-                margin="normal"
-                required
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                sx={{
-                  borderRadius: "20px",
-                  mr: 4,
-                  zIndex: 1,
-                  backgroundColor: "#201A2B",
-                  color: "white",
-                  "& label": {
-                    fontFamily: "Arial, sans-serif",
-                    fontSize: "16px",
-                    color: "white",
-                  },
-                  "& label.Mui-focused": {
-                    color: "transparent",
-                  },
-                  "& fieldset": {
-                    border: "none",
-                  },
-                }}
-                className="my-text-fieldLU"
-              />
-            </div>
-            {/* {emailError} */}
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <Typography
-                variant="h"
-                color="text.secondary"
-                sx={{ ml: 2, mr: 2, zIndex: 1 }}
-              >
-                pw
-              </Typography>
-              <TextField
-                margin="normal"
-                required
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                sx={{
-                  borderRadius: "20px",
-                  mr: 4,
-                  zIndex: 1,
-                  backgroundColor: "#201A2B",
-                  color: "white",
-                  "& label": {
-                    fontFamily: "Arial, sans-serif",
-                    fontSize: "16px",
-                    color: "white",
-                  },
-                  "& label.Mui-focused": {
-                    color: "transparent",
-                  },
-                  "& fieldset": {
-                    border: "none",
-                  },
-                }}
-                // value={pw}
-                // onChange={(e) => setPasswrod(e.target.value)}
-                className="my-text-fieldLU"
-              />
-              {/* {passwordError}
-            <h6 className="LoginError">{loginError}</h6> */}
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                marginBottom: "10px",
-              }}
-            >
-              {/* <Link to="/FirstPage"> */}
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                // onClick={handleSubmit}
-                sx={{
-                  mt: -3,
-                  mb: 7,
-                  width: "70%",
-                  backgroundColor: "#311E57",
-                  "&:hover": {
-                    backgroundColor: "#201A2B",
-                  },
-                }}
-                className="bt"
-              >
-                Log In
-              </Button>
-              {/* </Link> */}
-            </div>
+              <Stack direction="column" spacing={3}>
+                <TextField
+                  className="email"
+                  label="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  margin="normal"
+                  error={emailerror}
+                />
+                <TextField
+                  className="password"
+                  label="Password"
+                  type="password"
+                  value={pw}
+                  onChange={(e) => setPW(e.target.value)}
+                  margin="normal"
+                  error={pwerror}
+                />
+              </Stack>
+            </Box>
+          </ThemeProvider>
+          <SearchButton className="login-button" variant="contained"
+          onClick={handleLogin}>
+            Login
+          </SearchButton>
+          <Stack className="register-row"
+           direction="column" spacing={0.5}>
             <Typography
-              variant="h"
-              color="text.secondary"
-              sx={{ ml: 8, zIndex: 1 }}
+              variant="h6"
+              noWrap
+              component="a"
+              sx={{
+                fontFamily: "monospace",
+                fontWeight: 5000,
+                textDecoration: "none",
+                color: "#201A2B",
+                alignContent: "center",
+              }}
             >
-              Do not have an account?
+              Are you a new user?
             </Typography>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                marginBottom: "10px",
-              }}
-            >
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                // onClick={handleSubmit}
-                sx={{
-                  mt: -5,
-                  mb: 8,
-                  width: "70%",
-                  backgroundColor: "#311E57",
-                  "&:hover": {
-                    backgroundColor: "#201A2B",
-                  },
-                }}
-                className="bt"
-              >
-                Sign Up
-              </Button>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                // marginBottom: "10px",
-              }}
-            >
-              {/* <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{
-                  mt: -5,
-                  mb: 8,
-                  width: "70%",
-                  backgroundColor: "#311E57",
-                  "&:hover": {
-                    backgroundColor: "#201A2B",
-                  },
-                }}
-                className="bt"
-              > */}
-              {/* <Link to="/signupU">SIGNUP</Link> */}
-              {/* </Button> */}
-            </div>
-          </Box>
+            <SearchButton className="register-button" variant="contained"
+              onClick={handleRegister}>
+              Register
+            </SearchButton>
+          </Stack>
         </Box>
-      </Grid>
-    </Grid>
+        <div className="right-side"></div>
+      </div>
+    </div>
   );
-  //     <div className="wrapper">
-  //       <form action="">
-  //         <h1>LOGIN</h1>
-  //         <div className="img">
-  //           <img src={form} alt="Form" className="img1" />
-  //         </div>
-  //         <div className="input-box">
-  //           <input type="text" placeholder="username" required />
-  //           <FaUser className="icon" />
-  //         </div>
-  //         <div className="input-box">
-  //           <input type="password" placeholder="password" required />
-  //           <FaLock className="icon" />
-  //         </div>
-  //         <button type="submit">Login</button>
-
-  //         <div className="register-link">
-  //           <p>
-  //             Don't have an account? <a href="/register">Register Here</a>
-  //           </p>
-  //         </div>
-  //       </form>
-  //     </div>
-  //   );
-  // }
 }
+
 export default Login;

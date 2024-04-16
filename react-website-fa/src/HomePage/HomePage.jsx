@@ -8,6 +8,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import './HomePage.css'
 
+
 function HomePage() {
   const navigate = useNavigate();
 
@@ -36,7 +37,7 @@ function HomePage() {
 
   return (
     <div style={{ textAlign: "center" }}>
-      <ResponsiveAppBar></ResponsiveAppBar>
+       <ResponsiveAppBar></ResponsiveAppBar>
       <div className="heading">
       <Typography
             variant="h4"

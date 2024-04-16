@@ -12,7 +12,6 @@ function Search() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-      <ResponsiveAppBar />
       <div className="heading" style={{ marginBottom: '20px' }}>
         <Typography
           variant="h4"

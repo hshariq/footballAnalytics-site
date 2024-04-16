@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import "../SearchBar/Searchbar.css";
@@ -10,6 +10,7 @@ import { Grid } from "@mui/material";
 import axios from "axios";
 import { useRef } from "react";
 import footballTeams from "./teamnames";
+import { useNavigate } from "react-router-dom";
 
 const options1 = footballTeams;
 
@@ -87,7 +88,7 @@ const customTheme = (outerTheme) =>
         },
       },
     },
-  });
+});
 
 
 function SearchBar() {
@@ -101,6 +102,8 @@ function SearchBar() {
   const [date, setDate] = useState("");
   const textFieldRef = useRef(null);
   const textFieldRef2 = useRef(null);
+
+  const navigate = useNavigate();
 
   const handleSearch = () => {
     if (team1 === "" || team2 === "") {
@@ -129,6 +132,7 @@ function SearchBar() {
         .request(config)
         .then((response) => {
           console.log(JSON.stringify(response.data));
+          navigate('/dashboard');
         })
         .catch((error) => {
           console.log("API NOT WORKING");

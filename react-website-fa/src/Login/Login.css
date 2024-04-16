@@ -1,98 +1,4 @@
-/* .wrapper{
-    width: 400px;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: transparent;
-    border-radius: 22px;
-    border: 2px solid gray;
-    padding: auto;
-}
-
-.wrapper h1{
-    font-size: 36px;
-    text-align: center;
-}
-
-.wrapper .input-box{
-    position: relative;
-    width: 100%;
-    height: 60px;
-    margin: 30px 0;
-}
-
-.input-box input{
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    outline: none;
-    border: 2px solid gray;
-    border-radius: 40px;
-    font-size: 18px;
-    color: white;
-    padding: 20px 45px 20px 20px;
-}
-
-.input-box input::placeholder{
-    color: white
-}
-
-.input-box .icon{
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    transform: translateY(-50%);
-    font-size: 16px;
-}
-
-.wrapper button{
-    display: block;
-    width: 100%;
-    height: 45px;
-    border: none;
-    outline: none;
-    background: white;
-    border-radius: 40px;
-    font-size: 18px;
-    color: #333;
-    cursor: pointer;
-    transition: .5s;
-    font-weight: 700;
-}
-
-.wrapper .register-link {
-    text-align: center;
-    margin: 20px 0 15px;
-    font-size: 16px;
-}
-
-.register-link p a{
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.register-link p a:hover{
-    text-decoration: underline;
-}
-
-.form{
-    transform: translateY(20px);
-  }
-
-.img1{
-    width: 400px;
-    height: 100%`;
-}*/
-
-.headerofLogin, h5{
-  font-family: "Poppins", sans-serif;
-  font-weight: bold;
-  /* border-bottom: 3px solid #ffaaaa;  */
-  padding: 0%;
-}
-.my-text-fieldLU {
+/* .my-text-fieldLU {
   width: 70%;
   transform: translateX(10px);
 }
@@ -106,14 +12,8 @@
 .form{
   transform: translateY(20px);
 }
-
-
-@media (max-width: 1200px) {
-  .img1 {
-    display: none;
-  }
   
-  .auth-FormContainter {
+.auth-FormContainter {
     position: absolute;
     top: 0;
     left: 0;
@@ -122,11 +22,56 @@
     border-color: transparent;
     background-color: #201A2B;
   }
-}
+
 a {
     text-decoration: none;
     color: white;
+  } */
+
+
+  .page-container {
+    display: flex;
   }
+
+  .form-container {
+    flex:1;
+    width: 50vh;
+    height:450px;
+    box-shadow: 10px;
+
+  }
+  .left-side{
+    flex:1;
+  }
+
+  .right-side{
+    flex:1;
+  }
+
+  .fields-container{
+    transform: translateY(-25px);
+    height: 170px;
+    width:400px
+
+  }
+  .email{
+    width: 300px;
+    transform: translateY(15px);
+  }
+  .password{
+    width: 300px;
+    transform: translateY(15px);
+  }
+
+  .register-row{
+    transform: translateY(30px);
+  }
+
+  .heading
+{
+  transform: translateY(-10px);
+}
+
 
 
 
