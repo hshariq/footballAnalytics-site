@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import ResponsiveAppBar from "../NavBar/NavBarNew";
-import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
+import Typography from "@mui/material/Typography";
+import { styled } from "@mui/material/styles";
 import SearchBar from "./SearchBar";
 
 function Search() {
@@ -11,28 +11,36 @@ function Search() {
   const [playeranalysis, setPlayerAnalysis] = useState(true);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-      <div className="heading" style={{ marginBottom: '20px' }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <ResponsiveAppBar></ResponsiveAppBar>
+
+      <div className="heading" style={{ marginBottom: "20px" }}>
         <Typography
           variant="h4"
           noWrap
           component="a"
           sx={{
-            fontFamily: 'monospace',
+            fontFamily: "monospace",
             fontWeight: 5000,
-            letterSpacing: '.5rem',
-            textDecoration: 'none',
-            color: '#ffffff',
-            alignContent: 'center'
+            letterSpacing: ".5rem",
+            textDecoration: "none",
+            color: "#ffffff",
+            alignContent: "center",
           }}
         >
           FOOTBALL ANALYTICS
         </Typography>
         <div className="search">
-      <SearchBar/>
+          <SearchBar />
+        </div>
       </div>
-      </div>
-      
     </div>
   );
 }

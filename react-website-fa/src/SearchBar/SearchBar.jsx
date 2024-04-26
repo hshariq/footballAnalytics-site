@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import "../SearchBar/Searchbar.css";
@@ -11,6 +11,9 @@ import axios from "axios";
 import { useRef } from "react";
 import footballTeams from "./teamnames";
 import { useNavigate } from "react-router-dom";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
+import Fade from "@mui/material/Fade";
 
 const options1 = footballTeams;
 
@@ -88,8 +91,7 @@ const customTheme = (outerTheme) =>
         },
       },
     },
-});
-
+  });
 
 function SearchBar() {
   const outerTheme = useTheme();
@@ -102,6 +104,11 @@ function SearchBar() {
   const [date, setDate] = useState("");
   const textFieldRef = useRef(null);
   const textFieldRef2 = useRef(null);
+  const [open, setOpen] = React.useState(false);
+  const [fade, setFade] = React.useState(true);
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const navigate = useNavigate();
 
@@ -116,6 +123,7 @@ function SearchBar() {
       setError2(true); // Set error state for team2
     } else {
       var str = `sofa score ${team1} vs ${team2} ${date}`;
+      console.log(str);
       let data = JSON.stringify({
         search_query: str,
       });
@@ -128,19 +136,66 @@ function SearchBar() {
         },
         data: data,
       };
+      setOpen(true);
+      setFade(false);
       axios
         .request(config)
         .then((response) => {
-          console.log(JSON.stringify(response.data));
-          navigate('/dashboard');
+          let id = response.data;
+          console.log(id);
+          let config1 = {
+            method: "get",
+            maxBodyLength: Infinity,
+            url: `http://127.0.0.1:5000/playerstats/${id}`,
+            headers: {},
+          };
+
+          axios
+            .request(config1)
+            .then((response) => {
+              console.log(JSON.stringify(response.data));
+              let config2 = {
+                method: "get",
+                maxBodyLength: Infinity,
+                url: `http://127.0.0.1:5000/playershots/${id}`,
+                headers: {},
+              };
+
+              axios
+                .request(config2)
+                .then((response) => {
+                  console.log(JSON.stringify(response.data));
+                  let config3 = {
+                    method: "get",
+                    maxBodyLength: Infinity,
+                    url: `http://127.0.0.1:5000/avgpos/${id}`,
+                    headers: {},
+                  };
+
+                  axios
+                    .request(config3)
+                    .then((response) => {
+                      console.log(JSON.stringify(response.data));
+                      setOpen(false);
+                      navigate("/dashboard");
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
         })
         .catch((error) => {
           console.log("API NOT WORKING");
         });
-      console.log(str);
     }
   };
-  
 
   const SearchButton = styled(Button)(({ theme }) => ({
     color: "#FFFFFF",
@@ -155,8 +210,6 @@ function SearchBar() {
       color: "#0c2222",
     },
   }));
-
-  
 
   const handleMenuTeam1Click = (name) => {
     setTeam1(name);
@@ -174,7 +227,7 @@ function SearchBar() {
     setopenmenu1(true);
     setTeam1(event.target.value);
     setError1(false);
-    };
+  };
 
   const handleTeam2Change = (event) => {
     setopenmenu2(true);
@@ -192,115 +245,135 @@ function SearchBar() {
 
   return (
     <div className="searchbox">
-      <div className="card">
-        <ThemeProvider theme={customTheme(outerTheme)}>
-          <Stack direction="row" spacing={3}>
-            {/* <TextField
+      <div className="back">
+        <Backdrop
+          sx={{
+            backgroundColor: "#0c2222",
+            color: "#fff",
+            zIndex: (theme) => theme.zIndex.drawer + 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+          open={open} // use the loading state to determine when to show the Backdrop
+          onClick={handleClose}
+        >
+          <CircularProgress color="inherit" />
+          <div style={{ marginTop: "10px" }}>Searching for your match</div>
+        </Backdrop>
+      </div>
+
+      <Fade in={fade}>
+        <div className="card">
+          <ThemeProvider theme={customTheme(outerTheme)}>
+            <Stack direction="row" spacing={3}>
+              {/* <TextField
               label="Team 1"
               value={team1}
               onChange={(e) => setTeam1(e.target.value)}
               margin="normal"
   /> */}
-            <TextField
-              label="Team 1"
-              value={team1}
-              onChange={handleTeam1Change}
-              margin="normal"
-              error={error1}
-              onClick={handleOpen1}
-              ref={textFieldRef}
-            />
-            {openmenu1 && (
-              <div
-                className="search-bar-dropdown1"
-                style={{
-                  position: "absolute",
-                  top:
-                    textFieldRef.current.offsetTop +
-                    textFieldRef.current.offsetHeight,
-                  left: textFieldRef.current.offsetLeft,
-                  width: textFieldRef.current.offsetWidth,
-                  maxHeight: "200px", // Set maximum height for the menu
-                  overflowY: "auto", // Enable vertical scrolling if menu overflows
-                  zIndex: 1000, // Ensure the menu appears above other elements
+              <TextField
+                label="Team 1"
+                value={team1}
+                onChange={handleTeam1Change}
+                margin="normal"
+                error={error1}
+                onClick={handleOpen1}
+                ref={textFieldRef}
+              />
+              {openmenu1 && (
+                <div
+                  className="search-bar-dropdown1"
+                  style={{
+                    position: "absolute",
+                    top:
+                      textFieldRef.current.offsetTop +
+                      textFieldRef.current.offsetHeight,
+                    left: textFieldRef.current.offsetLeft,
+                    width: textFieldRef.current.offsetWidth,
+                    maxHeight: "200px", // Set maximum height for the menu
+                    overflowY: "auto", // Enable vertical scrolling if menu overflows
+                    zIndex: 1000, // Ensure the menu appears above other elements
+                  }}
+                >
+                  {options1
+                    .filter((item) =>
+                      item.toLowerCase().includes(team1.toLowerCase())
+                    )
+                    .map((item, index) => (
+                      <div
+                        key={index}
+                        className="search-bar-dropdown-item1"
+                        onClick={() => handleMenuTeam1Click(item)}
+                      >
+                        {item}
+                      </div>
+                    ))}
+                </div>
+              )}
+              <div className="vs">vs</div>
+              <TextField
+                label="Team 2"
+                value={team2}
+                onChange={handleTeam2Change}
+                margin="normal"
+                error={error2}
+                onClick={handleOpen2}
+                ref={textFieldRef2}
+              />
+              {openmenu2 && (
+                <div
+                  className="search-bar-dropdown2"
+                  style={{
+                    position: "absolute",
+                    top:
+                      textFieldRef2.current.offsetTop +
+                      textFieldRef2.current.offsetHeight,
+                    left: textFieldRef2.current.offsetLeft,
+                    width: textFieldRef2.current.offsetWidth,
+                    maxHeight: "200px", // Set maximum height for the menu
+                    overflowY: "auto", // Enable vertical scrolling if menu overflows
+                    zIndex: 1000, // Ensure the menu appears above other elements
+                  }}
+                >
+                  {options2
+                    .filter((item) =>
+                      item.toLowerCase().includes(team2.toLowerCase())
+                    )
+                    .map((item, index) => (
+                      <div
+                        key={index}
+                        className="search-bar-dropdown-item2"
+                        onClick={() => handleMenuTeam2Click(item)}
+                      >
+                        {item}
+                      </div>
+                    ))}
+                </div>
+              )}
+            </Stack>
+            <Grid item xs={12}>
+              <TextField
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                margin="normal"
+                InputProps={{
+                  style: { color: "#FFFFFF" }, // Set color to white
                 }}
-              >
-                {options1
-                  .filter((item) =>
-                    item.toLowerCase().includes(team1.toLowerCase())
-                  )
-                  .map((item, index) => (
-                    <div
-                      key={index}
-                      className="search-bar-dropdown-item1"
-                      onClick={() => handleMenuTeam1Click(item)}
-                    >
-                      {item}
-                    </div>
-                  ))}
-              </div>
-            )}
-            <div className="vs">vs</div>
-            <TextField
-              label="Team 2"
-              value={team2}
-              onChange={handleTeam2Change}
-              margin="normal"
-              error={error2}
-              onClick={handleOpen2}
-              ref={textFieldRef2}
-            />
-            {openmenu2 && (
-              <div
-                className="search-bar-dropdown2"
-                style={{
-                  position: "absolute",
-                  top:
-                    textFieldRef2.current.offsetTop +
-                    textFieldRef2.current.offsetHeight,
-                  left: textFieldRef2.current.offsetLeft,
-                  width: textFieldRef2.current.offsetWidth,
-                  maxHeight: "200px", // Set maximum height for the menu
-                  overflowY: "auto", // Enable vertical scrolling if menu overflows
-                  zIndex: 1000, // Ensure the menu appears above other elements
-                }}
-              >
-                {options2
-                  .filter((item) =>
-                    item.toLowerCase().includes(team2.toLowerCase())
-                  )
-                  .map((item, index) => (
-                    <div
-                      key={index}
-                      className="search-bar-dropdown-item2"
-                      onClick={() => handleMenuTeam2Click(item)}
-                    >
-                      {item}
-                    </div>
-                  ))}
-              </div>
-            )}
-          </Stack>
-          <Grid item xs={12}>
-            <TextField
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              margin="normal"
-              InputProps={{
-                style: { color: "#FFFFFF" }, // Set color to white
-              }}
-            />
-          </Grid>
-          <SearchButton
-            className="search"
-            variant="contained"
-            onClick={handleSearch}
-          >
-            Search
-          </SearchButton>
-        </ThemeProvider>
-      </div>
+              />
+            </Grid>
+            <SearchButton
+              className="search"
+              variant="contained"
+              onClick={handleSearch}
+            >
+              Search
+            </SearchButton>
+          </ThemeProvider>
+        </div>
+      </Fade>
     </div>
   );
 }

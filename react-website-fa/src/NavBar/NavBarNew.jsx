@@ -20,11 +20,15 @@ import { jwtDecode } from "jwt-decode";
 const pages = ["About Us", "Our Services"];
 var settings = ["Logout"];
 
-function ResponsiveAppBar() {
+function ResponsiveAppBar(props) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [isLoggedIn, setIsLoggedIn] = React.useState(Boolean);
-  const [decoded,setDecoded] = React.useState("");
+  // const [isLoggedIn, setIsLoggedIn] = React.useState(Boolean);
+  const [state, setState] = React.useState({
+    isLoggedIn: false,
+    decoded: ""
+  });
+  // const [decoded,setDecoded] = React.useState("");
  
   const navigate = useNavigate();
 
@@ -42,36 +46,47 @@ function ResponsiveAppBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
-    if (isLoggedIn == true) {
+    if (state.isLoggedIn == true) {
       navigate('/login')
     };
   }
 
+  // useEffect(() => {
+  //   var token = localStorage.getItem("token");
+  //   if (token == null) {
+  //     setIsLoggedIn(false);
+  
+  //   }
+  //   else {
+  //     setIsLoggedIn(true);
+  //     setIsLoggedIn(true);
+  //     setDecoded(jwtDecode(token));
+  //   };
+  //   if (isLoggedIn == true) {
+  //     settings = ["Logout"]
+  //   }
+  //   else {
+  //     settings = [];
+  //   };
+
+  // },[]);
+
   useEffect(() => {
     var token = localStorage.getItem("token");
-    console.log(token);
-    if (token == null) {
-      console.log('no token');
-      setIsLoggedIn(false);
-    }
-    else {
-      setIsLoggedIn(true);
-      console.log("yes token");
-      setIsLoggedIn(true);
-      setDecoded(jwtDecode(token));
-      console.log(decoded.username)
-      console.log(isLoggedIn);
-    };
-    if (isLoggedIn == true) {
-      settings = ["Logout"]
-    }
-    else {
-      settings = [];
-    };
+      if (token == null) {
+        // setIsLoggedIn(false);
+        setState(state => ({ ...state, isLoggedIn: false }));
+        settings = [];
+      } else {
+        setState(state => ({ ...state, isLoggedIn: true }));
+        settings = ["Logout"]
+        // setDecoded(jwtDecode(token));
+        setState(state => ({ ...state, decoded: jwtDecode(token) }));
 
-  });
+      }
+  },[props.isLoggedIn])
 
-  
+
 
   return (
     <AppBar
@@ -169,7 +184,7 @@ function ResponsiveAppBar() {
                   }}
                 />
                 <Typography sx={{fontWeight:'1000',color: "#0c2222",fontSize:'20px' }}>
-                  {isLoggedIn? `${decoded.username}`:"Please Login"}
+                  {state.isLoggedIn? `${state.decoded.username}`:"Please Login"}
                 </Typography>
               </IconButton>
             </Tooltip>
