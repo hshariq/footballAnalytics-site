@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+}
+
+.aboutvid {
+    flex: 1;
+}
+
+.aboutvid img{
+    width:auto;
+    max-width: 750px;
+    height: auto;
+}
+
+
+.videocon {
+    flex:1
+}
+
+.videocon video {
+    width: auto;
+    max-width: 700px;
+    height: auto;
+}
+

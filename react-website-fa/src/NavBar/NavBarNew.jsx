@@ -23,12 +23,8 @@ var settings = ["Logout"];
 function ResponsiveAppBar(props) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  // const [isLoggedIn, setIsLoggedIn] = React.useState(Boolean);
-  const [state, setState] = React.useState({
-    isLoggedIn: false,
-    decoded: ""
-  });
-  // const [decoded,setDecoded] = React.useState("");
+  const [isLoggedIn, setIsLoggedIn] = React.useState(Boolean);
+  const [decoded,setDecoded] = React.useState("");
  
   const navigate = useNavigate();
 
@@ -46,7 +42,7 @@ function ResponsiveAppBar(props) {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
-    if (state.isLoggedIn == true) {
+    if (isLoggedIn == true) {
       navigate('/login')
     };
   }
@@ -74,17 +70,15 @@ function ResponsiveAppBar(props) {
   useEffect(() => {
     var token = localStorage.getItem("token");
       if (token == null) {
-        // setIsLoggedIn(false);
-        setState(state => ({ ...state, isLoggedIn: false }));
+        setIsLoggedIn(false);
         settings = [];
       } else {
-        setState(state => ({ ...state, isLoggedIn: true }));
+        setIsLoggedIn(true)
         settings = ["Logout"]
-        // setDecoded(jwtDecode(token));
-        setState(state => ({ ...state, decoded: jwtDecode(token) }));
+        setDecoded(jwtDecode(token));
 
       }
-  },[props.isLoggedIn])
+  },[])
 
 
 
@@ -111,7 +105,7 @@ function ResponsiveAppBar(props) {
             variant="h6"
             noWrap
             component="a"
-            href="/"
+            href="/home"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -184,7 +178,7 @@ function ResponsiveAppBar(props) {
                   }}
                 />
                 <Typography sx={{fontWeight:'1000',color: "#0c2222",fontSize:'20px' }}>
-                  {state.isLoggedIn? `${state.decoded.username}`:"Please Login"}
+                  {isLoggedIn? `${decoded.username}`:"Please Login"}
                 </Typography>
               </IconButton>
             </Tooltip>

@@ -1,0 +1,28 @@
+/* .images{
+    max-width: 400px;
+    height: auto;
+} */
+.main {
+    display: flex;
+}
+.slider-container-left {
+    width: 300px;
+    transform: translateX(50px);
+    justify-content: center;
+    align-items: center;
+}
+.slider-container-right {
+    width: 300px;
+    transform: translateX(50px);
+    justify-content: center;
+    align-items: center;
+    flex:1
+}
+
+.cards {
+    transform: translateX(80px);
+}
+
+.name {
+    align-self: center;
+}

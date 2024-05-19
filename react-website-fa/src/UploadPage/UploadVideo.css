@@ -2,7 +2,9 @@
     display: flex;
     justify-content: center; /* Horizontally center the content */
     align-items: center; /* Vertically center the content */
-    height: 100vh; /* Adjust the height of the container */
+    height: 400px; /* Adjust the height of the container */
+    width: 400px;
+    transform: translateY(130px);
   }
 
 .upload-card {

@@ -77,11 +77,7 @@ function UploadVideo(props) {
 
   return (
     <div>
-      <ResponsiveAppBar/>
       <div>
-        <h1 className="heading">
-          {analysis ? "Player Analysis" : "Team Analysis"}
-        </h1>
         <div className="uploadpage-container">
           <div className="upload-card">
             <img className="upload-icon" src={img} alt="Upload Icon" />

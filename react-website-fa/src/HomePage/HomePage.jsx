@@ -7,6 +7,10 @@ import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import './HomePage.css'
+import match from './match upload.png'
+import search from './searchformatch.png'
+import event from './eventdetection.png'
+
 
 
 function HomePage() {
@@ -32,7 +36,7 @@ function HomePage() {
 
   const revert = (event) => {
     event.preventDefault();
-    navigate("/search");
+    navigate("/divider");
   };
 
   return (
@@ -46,7 +50,7 @@ function HomePage() {
             sx={{
               mx: 'auto',
               fontFamily: 'monospace',
-              fontWeight: 5000,
+              fontWeight: 1500,
               letterSpacing: '.5rem',
               textDecoration: 'none',
               color: '#ffffff',
@@ -56,73 +60,17 @@ function HomePage() {
             FOOTBALL ANALYTICS 
         </Typography>
         </div>
-      <Card sx={{ backgroundColor: "#0c2222",marginTop:'-250px'}}>
-        <CardContent>
-          <div className="welcome">
-            <Typography
-              variant="h6"
-              component="div"
-              className="welcome-text"
-              sx={{
-                mx: 'auto',
-                fontFamily: 'monospace',
-                fontWeight: 5000,
-                textDecoration: 'none',
-                color: '#ffffff',
-                alignContent:'center'
-              }}
-            >
-              WELCOME TO FOOTBALL ANALYTICS!
-            </Typography>
-            <Typography
-              variant="body1"
-              component="div"
-              className="description"
-              sx={{
-                mx: 'auto',
-                fontFamily: 'monospace',
-                fontWeight: 5000,
-                textDecoration: 'none',
-                color: '#ffffff',
-                alignContent:'center'
-              }}
-            >
-              AT FOOTBALL ANALYTICS, WE'RE PASSIONATE ABOUT HELPING FOOTBALL
-              TEAMS UNLOCK THE FULL POTENTIAL OF THEIR GAME. WHETHER YOU'RE
-              LOOKING TO ANALYZE YOUR TEAM'S PERFORMANCE FROM MATCH FOOTAGE OR
-              SEARCHING FOR SPECIFIC MATCHES TO EXTRACT VALUABLE DATA, YOU'VE
-              COME TO THE RIGHT PLACE.
-            </Typography>
-            <Typography
-              variant="body1"
-              component="div"
-              className="description"
-              sx={{
-                mx: 'auto',
-                fontFamily: 'monospace',
-                fontWeight: 5000,
-                textDecoration: 'none',
-                color: '#ffffff',
-                alignContent:'center'
-              }}
-            >
-              HERE'S WHAT YOU CAN DO ON OUR PLATFORM:
-              <ul style={{ textAlign: "left" }}>
-                <li>
-                  <ProceedButton onClick={handleClose}>
-                    Upload match footage for analysis
-                  </ProceedButton>
-                </li>
-                <li>
-                  <ProceedButton onClick={revert}>
-                    Search for your own team's match
-                  </ProceedButton>
-                </li>
-              </ul>
-            </Typography>
+        <div className="cards">
+          <div className="upload">
+          <img src={match}></img>
           </div>
-        </CardContent>
-      </Card>
+          <div className="detection">
+          <img src={event}></img>
+          </div>
+          <div className="searchmatch">
+          <img src={search} onClick={revert}></img>
+          </div>
+        </div>
     </div>
   );
 }

@@ -1,7 +1,44 @@
 
 .heading {
-        margin-bottom: 300px; 
     padding-top: 40px;
 }
+
+.upload img{
+    width: 100%; /* Adjust as necessary */
+    max-width: 400px; /* Set a maximum width */
+    height: auto;
+}
+
+.detection img{
+    width: 100%; /* Adjust as necessary */
+    max-width: 400px; /* Set a maximum width */
+    height: auto;
+}
+
+.searchmatch img{
+    width: 100%; /* Adjust as necessary */
+    max-width: 400px; /* Set a maximum width */
+    height: auto;
+}
+
+.cards {
+    display: flex;
+}
+
+.upload{
+    flex:1
+
+}
+
+.detection{
+    flex:1
+    
+}
+
+.searchmatch{
+    flex:1
+}
+
+
 
   
