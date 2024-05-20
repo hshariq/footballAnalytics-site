@@ -160,7 +160,7 @@ function Login() {
 
   return (
     <div>
-      <ResponsiveAppBar></ResponsiveAppBar>
+      {/* <ResponsiveAppBar></ResponsiveAppBar> */}
       <div className="page-container">
         <div className="left-side"></div>
         <Box
