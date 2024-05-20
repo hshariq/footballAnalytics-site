@@ -1,109 +1,53 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import ResponsiveAppBar from "../NavBar/NavBarNew";
-import img from "../images/uploadicon.jpg";
-import "./UploadVideo.css";
-import { useNavigate } from "react-router-dom";
-import { storage } from "../firebase";
-import {
-  ref,
-  uploadBytesResumable,
-} from "firebase/storage";
-
+import { getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
+import { Profiler, useEffect, useState } from 'react'
 
 function UploadVideo(props) {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [uploaded, setUploaded] = useState(false);
-  const [analysis, setAnalysis] = useState(true);
-  const [clicked, setClicked] = useState(false);
+  
+  const [file, setFile] = useState(null)
+  const storage = getStorage()
 
-  var { id } = useParams();
-
-  if (id == "false") {
-    id = Boolean(id);
-    id = !id;
+  const getFileUrl = (e) => {
+    let value = e.target.files[0]
+    console.log(value)
+    setFile(value)
   }
-
-  React.useEffect(() => {
-    setAnalysis(id);
-  }, []);
-
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
-  const navigate = useNavigate();
-  const handleUpload = () => {
-    setClicked(true);
-    if (uploaded) {
-      navigate("/names");
-    } else {
-      if (!selectedFile) {
-        alert("Please select a file.");
-        return;
-      }
-      const imageRef = ref(storage, "/video");
-      const uploadTask = uploadBytesResumable(imageRef, selectedFile);
-
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress = Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-          console.log("Upload is " + progress + "% done");
-          setUploadProgress(progress)
-          switch (snapshot.state) {
-            case "paused":
-              console.log("Upload is paused");
-              break;
-            case "running":
-              console.log("Upload is running");
-              break;
-          }
-        },
-        (error) => {
-          console.error(error);
-        },
-        () => {
-          console.log("Upload is complete");
-          alert("Upload completed!");
-          setUploaded(true);
-          setClicked(false)
-        }
-      );
-
-
+  
+  const uploadVideoToFirebase = async () => {
+    if (file == null) {
+      alert('No file seleced')
+      return
     }
-  };
+    const videoRef = ref(storage, `upload/${file.name}`)
+
+    try {
+      const uploadTask = uploadBytesResumable(videoRef, file);
+      uploadTask.on('state_changed', (snapshot) => {
+        let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        progress = Math.trunc(progress)
+        console.log(progress)
+      }, (error) => {
+        console.log(error)
+      }, () => {
+        console.log('Video successfully uploaded')
+      }
+    
+    )
+
+      console.log('Video uploaded to cloud')
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   return (
     <div>
-      <div>
-        <div className="uploadpage-container">
-          <div className="upload-card">
-            <img className="upload-icon" src={img} alt="Upload Icon" />
-            <label htmlFor="fileInput" className="upload-button">
-              Upload Video
-              <input
-                type="file"
-                accept=".mp4"
-                onChange={handleFileChange}
-                style={{ display: "none" }}
-                id="fileInput"
-              />
-            </label>
-            {selectedFile && (
-              <div className="upload-progress">
-                Uploading: {uploadProgress}%
-              </div>
-            )}
-            <button onClick={handleUpload}
-            disabled={clicked}
-            >
-              {uploaded ? "Proceed" : "Start Upload"}
-            </button>
-          </div>
-        </div>
-      </div>
+      <label>Input video</label>
+      <input type="file"
+       id="input" name="input_video"
+       accept="video/mp4, video/mov"
+       onChange={getFileUrl}
+       />
+       <button onClick={uploadVideoToFirebase}>Upload</button>
     </div>
   );
 }

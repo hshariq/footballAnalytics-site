@@ -2,12 +2,13 @@ import { initializeApp } from "firebase/app";
 import {getStorage} from 'firebase/storage'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAFwC3ffsSFp_ADhaWP1TYD8mRk1T_0Sn8",
-  authDomain: "uploadimage-2ed90.firebaseapp.com",
-  projectId: "uploadimage-2ed90",
-  storageBucket: "uploadimage-2ed90.appspot.com",
-  messagingSenderId: "741046051443",
-  appId: "1:741046051443:web:726c17651c6e87b1edc006"
+  apiKey: "AIzaSyCfjDRlflcsByC8mkYSu-Ob1MbY-n5x0Wc",
+  authDomain: "fyp-testing-aa31e.firebaseapp.com",
+  projectId: "fyp-testing-aa31e",
+  storageBucket: "fyp-testing-aa31e.appspot.com",
+  messagingSenderId: "370928998241",
+  appId: "1:370928998241:web:7c1b9b113cac75e1f5d720",
+  measurementId: "G-05RY019C5G"
 };
 
 const app = initializeApp(firebaseConfig);
