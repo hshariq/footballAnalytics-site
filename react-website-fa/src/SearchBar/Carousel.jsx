@@ -55,6 +55,9 @@ import "./Carousel.css";
 import { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
 import { Button } from "@mui/material";
+import ResponsiveAppBar from "../NavBar/NavBarNew";
+import bgSearch from "./bgSearch.png";
+import vs from "./vs.png";
 
 const urls = [
   "https://firebasestorage.googleapis.com/v0/b/uploadimage-2ed90.appspot.com/o/team%20logos%2FAFC%20Bournemouthe.png?alt=media&token=44885748-6a2c-4ce5-8ea9-b8acba942f7d",
@@ -104,8 +107,8 @@ const imgs = [
 export default function Carousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const handlesubmit = () => {
-    console.log(imgs[currentSlide].name)
-  }
+    console.log(imgs[currentSlide].name);
+  };
   var settings = {
     dots: false,
     fade: true,
@@ -114,41 +117,118 @@ export default function Carousel() {
     slidesToShow: 1,
     slidesToScroll: 1,
     waitForAnimate: false,
-    afterChange: index => setCurrentSlide(index)
+    afterChange: (index) => setCurrentSlide(index),
   };
   return (
-    <div className="main">
-    <div className="slider-container-left">
-      <Slider {...settings}>
-        {imgs.map((url) => (
-          <div className="cards">
-            <div className="images">
-              <img src={url.img} />
-              <div className="name">
-                <Typography
-                  
-                  variant="h6"
-                  Wrap
-                  component="a"
-                  sx={{
-                    mx: "auto",
-                    fontFamily: "monospace",
-                    fontWeight: 1500,
-                    letterSpacing: ".5rem",
-                    textDecoration: "none",
-                    color: "#ffffff",
-                    alignContent: "center",
-                  }}
-                >
-                  {url.name}
-                </Typography>
-              </div>
-            </div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <ResponsiveAppBar></ResponsiveAppBar>
+      <Typography variant="h4" component="h1" className="search-heading">
+        SEARCH FOR ANY MATCH{" "}
+      </Typography>
+      <div className="searchbox">
+        <div className="slider-container-left">
+          <div className="background">
+            <img src={bgSearch} alt="Background" />
           </div>
-        ))}
-      </Slider>
-      <Button onClick={handlesubmit}>Click me</Button>
-    </div>
+          <Slider {...settings} className="slider">
+            {imgs.map((url) => (
+              <div className="cards_search" key={url.name}>
+                <div className="content">
+                  <div className="name">
+                    <Typography
+                      variant="h5"
+                      Wrap
+                      component="a"
+                      sx={{
+                        fontFamily: "monospace",
+                        fontWeight: 700, // Adjusted to bold
+                        letterSpacing: ".5rem",
+                        textDecoration: "none",
+                        color: "#ffffff",
+                        alignContent: "center",
+                      }}
+                    >
+                      {url.name}
+                    </Typography>
+                  </div>
+                  <div className="images">
+                    <img src={url.img} alt={url.name} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </Slider>
+        </div>
+
+        <div className="vs">
+          <img src={vs} alt="vs" />
+        </div>
+
+        <div className="slider-container-right">
+          <div className="background">
+            <img src={bgSearch} alt="Background" />
+          </div>
+          <Slider {...settings} className="slider">
+            {imgs.map((url) => (
+              <div className="cards_search" key={url.name}>
+                <div className="content">
+                  <div className="name">
+                    <Typography
+                      variant="h5"
+                      Wrap
+                      component="a"
+                      sx={{
+                        fontFamily: "monospace",
+                        fontWeight: 700, // Adjusted to bold
+                        letterSpacing: ".5rem",
+                        textDecoration: "none",
+                        color: "#ffffff",
+                        alignContent: "center",
+                      }}
+                    >
+                      {url.name}
+                    </Typography>
+                  </div>
+                  <div className="images">
+                    <img src={url.img} alt={url.name} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </Slider>
+          {/* End of right side content */}
+        </div>
+      </div>
+      {/* Date Picker Section */}
+      <div className="date-picker">
+        <input type="date" />
+      </div>
+      <Button
+        onClick={handlesubmit}
+        style={{
+          position: "fixed",
+          bottom: "55px",
+          right: "140px",
+          backgroundColor: "#F9104F",
+          color: "white",
+          border: "none",
+          padding: "15px 30px",
+          fontSize: "16px",
+          borderRadius: "10px",
+          cursor: "pointer",
+          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+          transition: "transform 0.3s ease-in-out",
+        }}
+      >
+        SEARCH AND ANALYZE
+      </Button>
     </div>
   );
 }
