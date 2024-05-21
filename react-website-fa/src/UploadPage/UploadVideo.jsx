@@ -66,7 +66,7 @@ function UploadVideo(props) {
       return
     }
     
-    navigate(`upload/${uploadId}`)
+    navigate(`/upload/${uploadId}`)
   }
 
   return (

@@ -5,15 +5,31 @@ import { useEffect, useState } from "react";
 
 function Inference(props) {
     const { uploadId } = useParams()
-    const [taskId, setTaskId] = useState('')
+    const [taskId, setTaskId] = useState(null)
     const [err, setErr] = useState('')
     const [result, setResult] = useState({})
+
+    const fetchResult = async (task_id) => {
+        try {
+            const response = await fetch(`http://localhost:5000/result/${task_id}`)
+            if (response.ok) {
+                const res = await response.json()
+                setResult(res)
+            }
+
+        } catch (err) {
+            setErr('Error while fetching details, try again.')
+            console.log(err)
+        }
+    }
 
     const startInference = async () => {
 
         if (localStorage.getItem('upload_id') === uploadId) {
             if (localStorage.getItem('task_id')) {
-                setTaskId(localStorage.getItem('task_id'))
+                const task_id = localStorage.getItem('task_id')
+                setTaskId(task_id)
+                fetchResult(task_id)
             }
             return
         }
@@ -35,22 +51,11 @@ function Inference(props) {
     }
 
     const onGetStatus = async () => {
-        if (taskId === '') {
+        if (taskId === '' || !taskId) {
             setErr('Cannot fetch details, task not set. Please try again.')
             return
         }
-        try {
-            const response = await fetch(`http://localhost:5000/result/${taskId}`)
-            if (response.ok) {
-                const res = await response.json()
-                setResult(res)
-                console.log(result)
-            }
-
-        } catch (err) {
-            setErr('Error while fetching details, try again.')
-            console.log(err)
-        }
+        fetchResult(taskId)
     }
 
     useEffect(() => {
@@ -60,52 +65,92 @@ function Inference(props) {
     return (
         <div>
             <ResponsiveAppBar />
-                <Grid
-                    container
-                    direction={'column'}
-                    sx={{
-                        background: '#201A2B',
-                        color: 'white',
-                        padding: 4
-                    }}
-                >
-                    <Grid item md={12}>
-                        <Typography variant="h4">
-                            Inference Status
-                        </Typography>
+            <Grid
+                container
+                direction={'column'}
+                sx={{
+                    background: '#201A2B',
+                    color: 'white',
+                    padding: 4
+                }}
+            >
+                <Grid item md={12}>
+                    <Typography variant="h4">
+                        Inference Status
+                    </Typography>
+                    {result && taskId &&
                         <Typography gutterBottom>
-                            Task ID: {taskId} | {result.ready ? 'Ready' : 'In Process'} | {result.successful ? 'Succesfuly Completed' : 'Failed'}
+                            Task ID: {taskId} | {result.ready ? 'Ready' : 'In Process'} | {result.successful ? 'Succesfuly Completed' : ''}
                         </Typography>
-                    </Grid>
-
-                    <Grid item marginTop={1}>
-                        <Button
-                            variant="contained"
-                            onClick={onGetStatus}
-                        >
-                            Get Status
-                        </Button>
-                    </Grid>
-
-                    <Grid item marginTop={1}>
-                        <Typography>
-                            Detection: <Link href={result.value && result.value.length >= 2 && result.value[0]}>Link to firebase</Link>
-                        </Typography>
-                        <CardMedia src={result.value[0]}>
-                            
-                        </CardMedia>
-                    </Grid>
-
+                    }
                 </Grid>
 
-                {
-                    err ?
-                        <Alert severity="error" variant='filled'>
-                            <AlertTitle>Error</AlertTitle>
-                            {err}
-                        </Alert> :
-                        null
-                }
+                <Grid item marginTop={1}>
+                    <Button
+                        variant="contained"
+                        onClick={onGetStatus}
+                    >
+                        Get Status
+                    </Button>
+
+                    <Button
+                        variant="contained"
+                        disabled={!result || !result.ready}
+                        sx={{
+                            marginLeft: 1
+                        }}
+                    >
+                        View Insights
+                    </Button>
+                </Grid>
+
+                <Grid item marginTop={1}>
+                    <Typography variant="h5" gutterBottom>
+                        Proccessed Videos
+                    </Typography>
+                    <Typography>
+                        Videos will appear below after successfull execution of process. Click Get Status to update.
+                    </Typography>
+                </Grid>
+            </Grid>
+
+            {result && result.value &&
+                <Grid
+                    container
+                    spacing={2}
+                    sx={{
+                        background: '#201A2B',
+
+                    }}
+                >
+                    <Grid item xs={6}>
+                        <CardMedia
+                            src={result.value[0]}
+                            component={'video'}
+                            autoPlay
+                            controls
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <CardMedia
+                            height={550}
+                            src={result.value[1]}
+                            component={'video'}
+                            autoPlay
+                            controls
+                        />
+                    </Grid>
+                </Grid>
+            }
+
+            {
+                err ?
+                    <Alert severity="error" variant='filled'>
+                        <AlertTitle>Error</AlertTitle>
+                        {err}
+                    </Alert> :
+                    null
+            }
 
 
         </div>
