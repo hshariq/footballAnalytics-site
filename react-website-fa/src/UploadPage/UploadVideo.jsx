@@ -8,14 +8,18 @@ import {
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { useState } from 'react'
 import ResponsiveAppBar from '../NavBar/NavBarNew'
+import { v4 as uuidv4 } from 'uuid'
+import { useNavigate } from 'react-router-dom'
 
 function UploadVideo(props) {
 
   const [file, setFile] = useState(null)
+  const [uploadId, setUploadId] = useState('')
   const [uploadProgress, setUploadProgress] = useState(0)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const storage = getStorage()
+  const navigate = useNavigate()
 
   // Set file after it's uploaded
   const getFileUrl = (e) => {
@@ -29,16 +33,19 @@ function UploadVideo(props) {
     setFile(null)
     setSuccess(false)
     setUploadProgress(0)
+    setUploadId('')
   }
 
   // Upload the selected file to firebase cloud storage
-  const uploadVideoToFirebase = async () => {
+  const uploadVideoToFirebase = async (e) => {
     // show error if the file is null
     if (file == null) {
       setError('Please select a file to upload')
       return
-    }
-    const videoRef = ref(storage, `upload/${file.name}`)
+    } 
+    const unique_id = uuidv4()
+    const videoRef = ref(storage, `upload/${unique_id}${file.name}`)
+    setUploadId(`${unique_id}${file.name}`)
 
     const uploadTask = uploadBytesResumable(videoRef, file);
     uploadTask.on('state_changed', (snapshot) => {
@@ -48,20 +55,24 @@ function UploadVideo(props) {
     }, (error) => {
       setError('Error while uploading video, please try again')
     }, () => {
-      console.log('Video successfully uploaded')
       setSuccess(true)
     })
+  }
+
+  // on inference start
+  const onStart = () => {
+    if (uploadId === '') {
+      setError('Error in processing video, please try again.')
+      return
+    }
+    
+    navigate(`upload/${uploadId}`)
   }
 
   return (
     <div>
       <ResponsiveAppBar></ResponsiveAppBar>
-
-
       <Container maxWidth={"sm"}>
-
-
-
         <Grid
           marginTop={22}
           container
@@ -122,6 +133,7 @@ function UploadVideo(props) {
                 marginRight: 1
               }}
               disabled={!success}
+              onClick={onStart}
             >
               Start
             </Button>

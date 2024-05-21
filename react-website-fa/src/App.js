@@ -13,6 +13,7 @@ import Register from './Register/Register';
 import Dashboard from './Dashboard/Dashboard';
 import Divider from './Divider/Divider';
 import Carousel from './SearchBar/Carousel';
+import Inference from './UploadPage/Inference';
 
 
 
@@ -31,7 +32,7 @@ export default function App() {
         <Route path='/dashboard' element={<Dashboard/>}/>
         <Route path='/divider' element={<Divider/>}/>
         <Route path='/carousel' element={<Carousel/>}/>
-
+        <Route path='/upload/:uploadId' element={<Inference/>} />
       </Routes>
     </div>
   );
