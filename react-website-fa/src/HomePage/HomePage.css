@@ -7,18 +7,21 @@
     width: 100%; /* Adjust as necessary */
     max-width: 400px; /* Set a maximum width */
     height: auto;
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Add transition effects */
 }
 
 .detection img{
     width: 100%; /* Adjust as necessary */
     max-width: 400px; /* Set a maximum width */
     height: auto;
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Add transition effects */
 }
 
 .searchmatch img{
     width: 100%; /* Adjust as necessary */
     max-width: 400px; /* Set a maximum width */
     height: auto;
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Add transition effects */
 }
 
 .cards {
@@ -40,5 +43,11 @@
 }
 
 
+.upload img:hover,
+.detection img:hover,
+.searchmatch img:hover {
+    transform: scale(1.05); /* Slightly enlarge the image */
+    opacity: 1.9; /* Slightly change the opacity */
+}
 
   
