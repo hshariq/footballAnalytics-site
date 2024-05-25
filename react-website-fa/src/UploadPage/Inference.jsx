@@ -80,7 +80,8 @@ function Inference(props) {
                     </Typography>
                     {result && taskId &&
                         <Typography gutterBottom>
-                            Task ID: {taskId} | {result.ready ? 'Ready' : 'In Process'} | {result.successful ? 'Succesfuly Completed' : result.status}
+                            Task ID: {taskId} | {result.ready ? 'Ready' : 'In Process'} | {result.successful ? 'Succesfuly Completed' : 
+                            result.state.charAt(0) + result.state.slice(1).toLowerCase()}
                         </Typography>
                     }
                 </Grid>
