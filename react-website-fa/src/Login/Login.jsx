@@ -254,7 +254,7 @@ function Login() {
               {error}
             </Alert> :
             null
-        }
+          }
           <Stack className="register-row"
            direction="column" spacing={0.5}>
             <Typography

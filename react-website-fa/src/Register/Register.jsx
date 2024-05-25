@@ -11,6 +11,10 @@ import Button from "@mui/material/Button";
 import './Register.css'
 import ResponsiveAppBar from "../NavBar/NavBarNew";
 import axios from "axios"
+import {
+  AlertTitle,
+   Alert, 
+ } from '@mui/material'
 
 const customTheme = (outerTheme) =>
   createTheme({
@@ -110,8 +114,30 @@ function Register() {
     const [cpwerror, setCPwError] = useState(false);
     const [username,setUsername] = useState("");
     const [usernameerror,setUsernameError] = useState(false);
-    const [pwmatcherror, setPwMatchError] = useState("");
+    const [pwmatcherror, setPwMatchError] = useState(false);
+    const [error,setError] = useState(false);
+    const [emptyError,setEmptyError] = useState(false);
     const navigate = useNavigate();
+
+    const handleusername = (e) => {
+      setEmptyError(false);
+      setUsername(e.target.value)
+    }
+    const handleemail = (e) => {
+      setEmptyError(false);
+      setEmail(e.target.value)
+      setEmailError(false)
+    }
+    const handlepw = (e) => {
+      setEmptyError(false);
+      setPwMatchError(false)
+      setPW(e.target.value)
+    }
+    const handlecpw = (e) => {
+      setEmptyError(false);
+      setPwMatchError(false)
+      setCPW(e.target.value)
+    }
   
     const handleLogin = () => {
       navigate('/login')
@@ -120,19 +146,33 @@ function Register() {
     const handleRegister = () => {
       if (email == ""){
         setEmailError(true)
+        setTimeout(() => {
+          setEmptyError(true);
+        }, 3000);
        }
        else if(pw == "") {
          setPwError(true)
+         setTimeout(() => {
+          setEmptyError(true);
+        }, 3000);
        }
        else if(cpw == "") {
         setCPwError(true)
+        setTimeout(() => {
+          setEmptyError(true);
+        }, 3000);
       }
       else if(username == "") {
         setUsernameError(true)
+        setTimeout(() => {
+          setEmptyError(true);
+        }, 3000);
       }
       else {
         if (pw != cpw){
-          setPwMatchError("Passwords do not match")
+          console.log(pw)
+          console.log(cpw)
+          setPwMatchError(true)
         }
         else {
           let data = JSON.stringify({
@@ -159,6 +199,7 @@ function Register() {
           })
           .catch((error) => {
             console.log(error);
+            setEmailError(true);
           });
           
 
@@ -216,39 +257,53 @@ function Register() {
                     className="username"
                     label="Username"
                     value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={handleusername}
                     margin="normal"
-                    error={usernameerror}
                   />
                   <TextField
                     className="register-email"
                     label="Email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={handleemail}
                     margin="normal"
-                    error={emailerror}
                   />
                   <TextField
                     className="register-password"
                     label="Password"
                     type="password"
                     value={pw}
-                    onChange={(e) => setPW(e.target.value)}
+                    onChange={handlepw}
                     margin="normal"
-                    error={pwerror}
                   />
                    <TextField
                     className="confirm-password"
                     label="Confirm Password"
                     type="password"
                     value={cpw}
-                    onChange={(e) => setCPW(e.target.value)}
+                    onChange={handlecpw}
                     margin="normal"
-                    error={cpwerror}
                   />
                 </Stack>
               </Box>
             </ThemeProvider>
+           { emptyError ?
+            <Alert severity="error" variant='filled'>
+              <AlertTitle>Please enter all fields</AlertTitle>
+            </Alert> :
+            null
+          }
+          { pwmatcherror ?
+            <Alert severity="error" variant='filled'>
+              <AlertTitle>Passwords do not match</AlertTitle>
+            </Alert> :
+            null
+          }
+          { emailerror ?
+            <Alert severity="error" variant='filled'>
+              <AlertTitle>This email already exists</AlertTitle>
+            </Alert> :
+            null
+          }
             <SearchButton className="register-bt" variant="contained"
             onClick={handleRegister}>
               Register
