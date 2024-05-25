@@ -21,13 +21,13 @@ export default function App() {
   return (
     <div className="App">
       <Routes> 
-        <Route default exact path="/login" element={<Login/>} />
+        <Route default exact path="/" element={<Login/>} />
         <Route exact path="/register" element={<Register/>} />
         <Route exact path="/home" element={<HomePage/>} />
         <Route exact path="/search" element={<Search/>} />
         <Route exact path="/analysis" element={<FirstPagee/>} />
         <Route exact path="/about" element={<SearchBar/>} />
-        <Route path='/analysis/:id' element={<UploadVideo/>}/>
+        <Route path='/upload' element={<UploadVideo/>}/>
         <Route path='/names' element={<EnterNames/>}/>
         <Route path='/dashboard' element={<Dashboard/>}/>
         <Route path='/divider' element={<Divider/>}/>
