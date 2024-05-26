@@ -12,9 +12,12 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import SportsSoccerRoundedIcon from "@mui/icons-material/SportsSoccerRounded";
 import Person2RoundedIcon from "@mui/icons-material/Person2Rounded";
+import logo from './loog.png'
+import './NavBarNew.css'
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
+
 
 
 const pages = ["About Us", "Our Services"];
@@ -25,8 +28,18 @@ function ResponsiveAppBar(props) {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [isLoggedIn, setIsLoggedIn] = React.useState(Boolean);
   const [decoded,setDecoded] = React.useState("");
+  const [reloadKey, setReloadKey] = React.useState(0);
  
   const navigate = useNavigate();
+
+  const gotohome = () => {
+    reloadComponent()
+    navigate('/home')
+  }
+
+  const reloadComponent = () => {
+    setReloadKey(prevKey => prevKey + 1);
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -43,35 +56,20 @@ function ResponsiveAppBar(props) {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
     if (isLoggedIn == true) {
-      navigate('/login')
-    };
+      navigate('/')
+      window.location.reload();
+    }
+    else {
+      navigate('/')
+    }
   }
 
-  // useEffect(() => {
-  //   var token = localStorage.getItem("token");
-  //   if (token == null) {
-  //     setIsLoggedIn(false);
-  
-  //   }
-  //   else {
-  //     setIsLoggedIn(true);
-  //     setIsLoggedIn(true);
-  //     setDecoded(jwtDecode(token));
-  //   };
-  //   if (isLoggedIn == true) {
-  //     settings = ["Logout"]
-  //   }
-  //   else {
-  //     settings = [];
-  //   };
-
-  // },[]);
 
   useEffect(() => {
     var token = localStorage.getItem("token");
       if (token == null) {
         setIsLoggedIn(false);
-        settings = [];
+        settings = ["Login"];
       } else {
         setIsLoggedIn(true)
         settings = ["Logout"]
@@ -83,8 +81,10 @@ function ResponsiveAppBar(props) {
 
 
   return (
+    <div key={reloadKey}>
     <AppBar
       position="sticky"
+      
       sx={{
         backgroundColor: "#FFFFFF",
         height: "10vh",
@@ -94,14 +94,15 @@ function ResponsiveAppBar(props) {
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <SportsSoccerRoundedIcon
+          <img className="fan-logo" src={logo} onClick={gotohome}/>
+          {/* <SportsSoccerRoundedIcon
             sx={{
               color: "#0c2222",
               display: { xs: "none", md: "flex" },
               mr: 1,
             }}
-          />
-          <Typography
+          /> */}
+          {/* <Typography
             variant="h6"
             noWrap
             component="a"
@@ -117,7 +118,8 @@ function ResponsiveAppBar(props) {
             }}
           >
             FOOTBALL ANALYTICS
-          </Typography>
+          </Typography> */}
+          
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -207,6 +209,7 @@ function ResponsiveAppBar(props) {
         </Toolbar>
       </Container>
     </AppBar>
+    </div>
   );
 }
 export default ResponsiveAppBar;

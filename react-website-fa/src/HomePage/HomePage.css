@@ -26,6 +26,7 @@
 
 .cards {
     display: flex;
+    transform: translateY(50px);
 }
 
 .upload{

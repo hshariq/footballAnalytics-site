@@ -14,6 +14,10 @@ import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
 import ResponsiveAppBar from "../NavBar/NavBarNew";
+import {
+ AlertTitle,
+  Alert, 
+} from '@mui/material'
 
 const customTheme = (outerTheme) =>
   createTheme({
@@ -109,7 +113,15 @@ function Login() {
   const [emailerror, setEmailError] = useState(false);
   const [pw, setPW] = useState("");
   const [pwerror, setPwError] = useState(false);
+  const [error,setError] = useState(false);
   const navigate = useNavigate();
+  
+
+  const [resetKey, setResetKey] = useState(0);
+
+  const resetComponent = () => {
+    setResetKey(prevKey => prevKey + 1);
+  };
 
   const handleRegister = () => {
     navigate('/register')
@@ -148,6 +160,7 @@ function Login() {
           navigate('/home')
         })
         .catch((error) => {
+          setError(true)
           console.log(error);
         });
 
@@ -158,9 +171,14 @@ function Login() {
     localStorage.removeItem("token");
   })
 
+  const handleChange = (e) => {
+    setEmail(e.target.value);
+    setError(false);
+  };
+
   return (
     <div>
-      {/* <ResponsiveAppBar></ResponsiveAppBar> */}
+      <ResponsiveAppBar/>
       <div className="page-container">
         <div className="left-side"></div>
         <Box
@@ -208,7 +226,8 @@ function Login() {
                   className="email"
                   label="Email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleChange
+                  }
                   margin="normal"
                   error={emailerror}
                 />
@@ -228,6 +247,14 @@ function Login() {
           onClick={handleLogin}>
             Login
           </SearchButton>
+          {
+          error ?
+            <Alert severity="error" variant='filled'>
+              <AlertTitle>Incorrect username/password</AlertTitle>
+              {error}
+            </Alert> :
+            null
+          }
           <Stack className="register-row"
            direction="column" spacing={0.5}>
             <Typography

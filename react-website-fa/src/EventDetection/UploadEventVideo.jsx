@@ -11,7 +11,7 @@ import ResponsiveAppBar from '../NavBar/NavBarNew'
 import { v4 as uuidv4 } from 'uuid'
 import { useNavigate } from 'react-router-dom'
 
-function UploadVideo(props) {
+function UploadEventVideo(props) {
 
   const [file, setFile] = useState(null)
   const [uploadId, setUploadId] = useState('')
@@ -66,7 +66,7 @@ function UploadVideo(props) {
       return
     }
     
-    navigate(`/detect/${uploadId}`)
+    navigate(`/event/${uploadId}`)
   }
 
   return (
@@ -186,4 +186,4 @@ function UploadVideo(props) {
   );
 }
 
-export default UploadVideo;
+export default UploadEventVideo;

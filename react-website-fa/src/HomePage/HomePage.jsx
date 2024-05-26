@@ -10,12 +10,12 @@ import './HomePage.css'
 import match from './match upload.png'
 import search from './searchformatch.png'
 import event from './eventdetection.png'
+import { useEffect } from "react";
 
 
-
-function HomePage() {
+function HomePageComponent() {
   const navigate = useNavigate();
-
+  const [isLoggedIn, setIsLoggedIn] = React.useState(Boolean);
   const ProceedButton = styled(Button)(({ theme }) => ({
     color: "#FFFFFF",
     backgroundColor: "#0c2222",
@@ -34,9 +34,17 @@ function HomePage() {
     navigate(`/analysis`);
   };
 
-  const revert = (event) => {
+  const revert0 = (event) => {
     event.preventDefault();
-    navigate("/divider");
+    navigate("/divider?id=1");
+  };
+  const revert1 = (event) => {
+    event.preventDefault();
+    navigate("/divider?id=2");
+  };
+  const revert2= (event) => {
+    event.preventDefault();
+    navigate("/divider?id=3");
   };
 
   return (
@@ -62,17 +70,42 @@ function HomePage() {
         </div>
         <div className="cards">
           <div className="upload">
-          <img src={match}></img>
+          <img src={match}
+          onClick={revert0}></img>
           </div>
           <div className="detection">
-          <img src={event}></img>
+          <img src={event}
+          onClick={revert2}></img>
           </div>
           <div className="searchmatch">
-          <img src={search} onClick={revert}></img>
+          <img src={search} onClick={revert1}></img>
           </div>
         </div>
     </div>
   );
+}
+
+
+function HomePage() {
+  const [isLoggedIn, setIsLoggedIn] = React.useState(Boolean);
+  useEffect(() => {
+    var token = localStorage.getItem("token");
+      if (token == null) {
+        setIsLoggedIn(false);
+      } else {
+        setIsLoggedIn(true)
+      }
+  },[])
+
+  return (
+    <div>
+    {isLoggedIn ? <HomePageComponent/> : <div><ResponsiveAppBar/>
+    PLEASE LOGIN</div>}
+    </div>
+
+  )
+
+
 }
 
 export default HomePage;

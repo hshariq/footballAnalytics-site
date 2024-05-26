@@ -12,8 +12,40 @@ import "./Divider.css";
 import UploadVid from './UploadVid.jsx'
 import EventDetection from "./EventDetection.jsx";
 import SearchMatch from "./SearchMatch.jsx";
+import { useState } from "react";
+import { useSearchParams } from 'react-router-dom';
+import { listAll, getDownloadURL, ref } from "firebase/storage";
+import { storage } from "../firebase";
+import { useEffect } from "react";
 
 export default function Divider() {
+  const [searchParams] = useSearchParams();
+  const bleh  = searchParams.get('id');
+  const id = parseInt(bleh, 10);
+  const [imageUrls, setImageUrls] = useState([]);
+
+  
+
+  React.useEffect(() => {
+      const fetchImages = async () => {
+        const listRef = ref(
+          storage,
+          "gs://uploadimage-2ed90.appspot.com/upload"
+        );
+  
+        try {
+          const res = await listAll(listRef);
+          const urls = await Promise.all(
+            res.items.map((item) => getDownloadURL(item))
+          );
+          setImageUrls(urls);
+          console.log(urls)
+        } catch (error) {
+          console.error("Error fetching images: ", error);
+        }
+      };
+      fetchImages();
+    }, []);
   return (
     <div style={{ textAlign: "center", justifyContent: "center" }}>
       <ResponsiveAppBar></ResponsiveAppBar>
@@ -36,14 +68,14 @@ export default function Divider() {
         </Typography>
       </div>
 
-      <Tabs defaultValue={1}>
+      <Tabs defaultValue={id}>
         <TabsList>
-          <Tab value={1}>Search any match</Tab>
-          <Tab value={2}>Match Upload</Tab>
+          <Tab value={1}>Match Upload</Tab>
           <Tab value={3}>Event Detection</Tab>
+          <Tab value={2}>Search any Match</Tab>
         </TabsList>
         <TabPanel
-          value={1}
+          value={2}
           sx={{
             display: "flex",
             justifyContent: "center",
@@ -56,7 +88,7 @@ export default function Divider() {
           </div>
         </TabPanel>
         <TabPanel
-          value={2}
+          value={1}
           sx={{
             display: "flex",
             justifyContent: "center",
