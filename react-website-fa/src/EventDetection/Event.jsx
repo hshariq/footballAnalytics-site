@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import ResponsiveAppBar from "../NavBar/NavBarNew";
 import { useEffect, useState } from "react";
 
-function Inference(props) {
+function Event(props) {
     const { uploadId } = useParams()
     const [taskId, setTaskId] = useState(null)
     const [err, setErr] = useState('')
@@ -11,7 +11,7 @@ function Inference(props) {
 
     const fetchResult = async (task_id) => {
         try {
-            const response = await fetch(`http://localhost:5000/infer/detect/result/${task_id}`)
+            const response = await fetch(`http://localhost:5000/infer/events/result/${task_id}`)
             if (response.ok) {
                 const res = await response.json()
                 setResult(res)
@@ -25,9 +25,9 @@ function Inference(props) {
 
     const startInference = async () => {
 
-        if (localStorage.getItem('detect_upload_id') === uploadId) {
-            if (localStorage.getItem('detect_task_id')) {
-                const task_id = localStorage.getItem('detect_task_id')
+        if (localStorage.getItem('event_upload_id') === uploadId) {
+            if (localStorage.getItem('event_task_id')) {
+                const task_id = localStorage.getItem('event_task_id')
                 setTaskId(task_id)
                 fetchResult(task_id)
             }
@@ -35,13 +35,13 @@ function Inference(props) {
         }
 
         try {
-            const response = await fetch(`http://localhost:5000/infer/detect/${uploadId}`, {
+            const response = await fetch(`http://localhost:5000/infer/events/${uploadId}`, {
                 method: 'GET'
             })
             if (response.ok) {
                 const res = await response.json()
-                localStorage.setItem('detect_upload_id', uploadId)
-                localStorage.setItem('detect_task_id', res.result_id)
+                localStorage.setItem('event_upload_id', uploadId)
+                localStorage.setItem('event_task_id', res.result_id)
                 setTaskId(res.result_id)
             }
         } catch (err) {
@@ -76,7 +76,7 @@ function Inference(props) {
             >
                 <Grid item md={12}>
                     <Typography variant="h4">
-                        Inference Status
+                        Event Detection Results
                     </Typography>
                     {result && taskId &&
                         <Typography gutterBottom>
@@ -124,18 +124,9 @@ function Inference(props) {
 
                     }}
                 >
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                         <CardMedia
-                            src={result.value[0]}
-                            component={'video'}
-                            autoPlay
-                            controls
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <CardMedia
-                            height={550}
-                            src={result.value[1]}
+                            src={result.value}
                             component={'video'}
                             autoPlay
                             controls
@@ -159,4 +150,4 @@ function Inference(props) {
 
 }
 
-export default Inference;
+export default Event;
